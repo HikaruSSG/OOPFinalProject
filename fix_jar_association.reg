@@ -1,0 +1,20 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\\.jar]
+@="jarfile"
+"Content Type"="application/x-java-archive"
+
+[HKEY_CLASSES_ROOT\\jarfile]
+@="Executable Jar File"
+
+[HKEY_CLASSES_ROOT\\jarfile\\DefaultIcon]
+@="\\"%JAVA_HOME%\\bin\\java.exe\\",0"
+
+[HKEY_CLASSES_ROOT\\jarfile\\shell]
+@="open"
+
+[HKEY_CLASSES_ROOT\\jarfile\\shell\\open]
+@="Open"
+
+[HKEY_CLASSES_ROOT\\jarfile\\shell\\open\\command]
+@="\\"%JAVA_HOME%\\bin\\java.exe\\" -jar \\"%1\\" %*"
