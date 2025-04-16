@@ -9,8 +9,8 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -45,14 +45,14 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version> <!-- Use a specific version -->
                 <configuration>
-                    <source>21</source> <!-- Redundant with properties but good practice -->
-                    <target>21</target> <!-- Redundant with properties but good practice -->
+                    <source>1.8</source> <!-- Redundant with properties but good practice -->
+                    <target>1.8</target> <!-- Redundant with properties but good practice -->
                     <!-- Explicitly include all .java files in the base directory -->
                     <includes>
                         <include>*.java</include>
                     </includes>
-                </configuration>
-            </plugin>
+                  </configuration>
+                </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
