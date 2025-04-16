@@ -1,7 +1,7 @@
 # PowerShell script
 
 # Function to compile the Java program using Maven
-function Compile-Maven {
+function Invoke-Maven {
   Write-Host "Compiling Java program with Maven..."
   try {
     mvn clean install
@@ -88,7 +88,7 @@ while ($true) {
 
   switch ($choice) {
     "1" {
-      Compile-Maven
+      Invoke-Maven
     }
     "2" {
       Run-Program

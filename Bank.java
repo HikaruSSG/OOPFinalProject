@@ -8,14 +8,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.math.RoundingMode;
 import java.sql.*;
-import java.io.File;
-import java.net.URISyntaxException;
 
 public class Bank {
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
     private List<User> users;
-    private List<Transaction> transactions;
-    private static final String DB_FILE_NAME = "bank.db";
     private static String DB_FILE_PATH = "target/bank.db"; // Relative path
     /*static {
         try {

@@ -6,7 +6,6 @@ import java.util.List;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Clipboard;
 import java.awt.Toolkit;
-import java.time.format.DateTimeFormatter;
 
 /**
  * GUI class for the Banking System.
