@@ -7,90 +7,73 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Clipboard;
 import java.awt.Toolkit;
 
-/**
- * GUI class for the Banking System.
- * This class creates the graphical user interface for the banking application,
- * handling user interactions and displaying bank functionalities.
- */
 public class GUI extends JFrame {
 
-    private Bank bank;
-    private User loggedInUser;
-    private JLabel userDetailsLabel;
+    private Bank bank; // Bank object to manage users and transactions
+    private User loggedInUser; // Currently logged-in user
+    private JLabel userDetailsLabel; // Label to display user details
 
-    /**
-     * Constructor for GUI class.
-     * Initializes the GUI components, sets up the main frame, and creates panels for different functionalities.
-     * @param bank The Bank object to interact with.
-     */
     public GUI(Bank bank) {
         this.bank = bank;
-        setTitle("Banking System"); // Sets the title of the JFrame
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Sets default close operation
-        setSize(400, 300); // Sets the size of the JFrame
-        setResizable(false); // Disable window resizing
-        setLayout(new BorderLayout()); // Sets the layout manager
+        setTitle("Banking System");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(400, 300);
+        setResizable(false);
+        setLayout(new BorderLayout());
 
-        // User Details Label
-        userDetailsLabel = new JLabel("Not logged in"); // Initializes user details label
-        userDetailsLabel.setHorizontalAlignment(SwingConstants.CENTER); // Centers the text horizontally
-        add(userDetailsLabel, BorderLayout.NORTH); // Adds label to the north region
+        userDetailsLabel = new JLabel("Not logged in");
+        userDetailsLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(userDetailsLabel, BorderLayout.NORTH);
 
-        // Main Panel (Card Layout)
-        JPanel mainPanel = new JPanel(new CardLayout()); // Main panel using CardLayout
-        add(mainPanel, BorderLayout.CENTER); // Adds main panel to the center
+        JPanel mainPanel = new JPanel(new CardLayout()); // Panel to switch between different views
+        add(mainPanel, BorderLayout.CENTER);
 
-        // Card Layout
-        CardLayout cardLayout = (CardLayout) mainPanel.getLayout(); // Gets the CardLayout
+        CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
 
-        // Login Panel
-        JPanel loginPanel = createLoginForm(mainPanel, cardLayout); // Creates login panel
-        mainPanel.add(loginPanel, "login"); // Adds login panel to main panel
+        JPanel loginPanel = createLoginForm(mainPanel, cardLayout); // Panel for user login
+        mainPanel.add(loginPanel, "login");
 
-        // Registration Panel
-        JPanel registrationPanel = createUserRegistrationForm(mainPanel, cardLayout); // Creates registration panel
-        mainPanel.add(registrationPanel, "register"); // Adds registration panel to main panel
+        JPanel registrationPanel = createUserRegistrationForm(mainPanel, cardLayout); // Panel for user registration
+        mainPanel.add(registrationPanel, "register");
 
-        // Main Menu Panel
-        JPanel mainMenuPanel = createMainMenu(mainPanel, cardLayout); // Creates main menu panel
+        JPanel mainMenuPanel = createMainMenu(mainPanel, cardLayout); // Panel for main user menu
         System.out.println("Main menu panel created: " + (mainMenuPanel != null));
-        mainPanel.add(mainMenuPanel, "mainMenu"); // Adds main menu panel to main panel
+        mainPanel.add(mainMenuPanel, "mainMenu");
         System.out.println("Main menu panel added to mainPanel");
 
-        // Initial Panel
-        JPanel initialPanel = new JPanel(); // Initial panel
-        JButton loginButton = new JButton("Login"); // Login button
+        JPanel initialPanel = new JPanel(); // Panel for initial login/register buttons
+        JButton loginButton = new JButton("Login");
         loginButton.setPreferredSize(new Dimension(90, 25));
-        JButton registerButton = new JButton("Register"); // Register button
+        JButton registerButton = new JButton("Register");
         registerButton.setPreferredSize(new Dimension(90, 25));
-        initialPanel.add(loginButton); // Adds login button to initial panel
-        initialPanel.add(registerButton); // Adds register button to initial panel
-        mainPanel.add(initialPanel, "initial"); // Adds initial panel to main panel
+        initialPanel.add(loginButton);
+        initialPanel.add(registerButton);
+        mainPanel.add(initialPanel, "initial");
 
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "login"); // Shows login panel on button click
+                cardLayout.show(mainPanel, "login"); // Switch to login panel
             }
         });
 
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "register"); // Shows registration panel on button click
+                cardLayout.show(mainPanel, "register"); // Switch to registration panel
             }
         });
 
-        cardLayout.show(mainPanel, "initial"); // Shows initial panel at start
+        cardLayout.show(mainPanel, "initial"); // Show initial panel
 
-        setVisible(true); // Sets the GUI to be visible
+        setVisible(true);
     }
 
     private JPanel createLoginForm(JPanel mainPanel, CardLayout cardLayout) {
-        JPanel loginPanel = new JPanel(new GridBagLayout());
+        JPanel loginPanel = new JPanel(new GridBagLayout()); // Use GridBagLayout for flexible layout
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(5, 5, 5, 5); // Add spacing between components
+        gbc.anchor = GridBagConstraints.WEST; // Align components to the west
 
         JLabel bankNumberLabel = new JLabel("Bank Number:");
         JTextField bankNumberField = new JTextField();
@@ -103,11 +86,11 @@ public class GUI extends JFrame {
         JButton backButton = new JButton("Back");
         backButton.setPreferredSize(new Dimension(90, 25));
 
-        gbc.gridx = 0;
-        gbc.gridy = 0;
+        gbc.gridx = 0; // Grid column 0
+        gbc.gridy = 0; // Grid row 0
         loginPanel.add(bankNumberLabel, gbc);
 
-        gbc.gridx = 1;
+        gbc.gridx = 1; // Grid column 1
         gbc.gridy = 0;
         loginPanel.add(bankNumberField, gbc);
 
@@ -121,8 +104,8 @@ public class GUI extends JFrame {
 
         gbc.gridx = 0;
         gbc.gridy = 2;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridwidth = 2; // Span two columns
+        gbc.anchor = GridBagConstraints.CENTER; // Center the button
         loginPanel.add(loginButton, gbc);
 
         gbc.gridx = 0;
@@ -136,15 +119,16 @@ public class GUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String bankNumber = bankNumberField.getText();
                 String pinNumber = new String(pinNumberField.getPassword());
-                loggedInUser = bank.login(bankNumber, pinNumber);
+                loggedInUser = bank.login(bankNumber, pinNumber); // Attempt to log in
+
                 if (loggedInUser != null) {
-                    displayUserDetails();
-                    if (loggedInUser.isAdmin()) {
+                    displayUserDetails(); // Display user details
+                    if (loggedInUser.isAdmin()) { // Check if user is admin
                         JPanel adminMenuPanel = createAdminMenu(mainPanel, cardLayout);
                         mainPanel.add(adminMenuPanel, "adminMenu");
-                        cardLayout.show(mainPanel, "adminMenu");
+                        cardLayout.show(mainPanel, "adminMenu"); // Show admin menu
                     } else {
-                        cardLayout.show(mainPanel, "mainMenu");
+                        cardLayout.show(mainPanel, "mainMenu"); // Show main menu
                     }
                 } else {
                     JOptionPane.showMessageDialog(GUI.this, "Invalid credentials.");
@@ -155,7 +139,7 @@ public class GUI extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "initial");
+                cardLayout.show(mainPanel, "initial"); // Go back to initial panel
             }
         });
 
@@ -163,7 +147,7 @@ public class GUI extends JFrame {
     }
 
     private JPanel createUserRegistrationForm(JPanel mainPanel, CardLayout cardLayout) {
-        JPanel registrationPanel = new JPanel(new GridLayout(6, 2));
+        JPanel registrationPanel = new JPanel(new GridLayout(6, 2)); // Use GridLayout for simple layout
         JLabel userNameLabel = new JLabel("User Name:");
         JTextField userNameField = new JTextField();
         userNameField.setPreferredSize(new Dimension(150, 25));
@@ -176,9 +160,9 @@ public class GUI extends JFrame {
         accountTypeComboBox.setPreferredSize(new Dimension(150, 25));
         JLabel isAdminLabel = new JLabel("Admin:");
         JCheckBox isAdminCheckBox = new JCheckBox();
-        boolean adminExists = bank.adminExists();
+        boolean adminExists = bank.adminExists(); // Check if an admin already exists
         if (adminExists) {
-            isAdminCheckBox.setVisible(false);
+            isAdminCheckBox.setVisible(false); // Hide admin checkbox if admin exists
             isAdminLabel.setVisible(false);
         }
         JLabel bankNumberLabel = new JLabel("Bank Number:");
@@ -208,38 +192,30 @@ public class GUI extends JFrame {
                 String pinNumber = new String(pinNumberField.getPassword());
                 String accountType = (String) accountTypeComboBox.getSelectedItem();
                 boolean isAdmin = isAdminCheckBox.isSelected();
-                String bankNumber = bank.registerUser(userName, pinNumber, accountType, isAdmin);
+                String bankNumber = bank.registerUser(userName, pinNumber, accountType, isAdmin); // Register the user
 
                 if (bankNumber != null) {
                     bankNumberValueLabel.setText(bankNumber);
-                    // Create a custom panel for the dialog
                     JPanel messagePanel = new JPanel(new BorderLayout(5, 5));
-                messagePanel.add(new JLabel("User registered successfully. Your bank number is: " + bankNumber), BorderLayout.CENTER);
+                    messagePanel.add(new JLabel("User registered successfully. Your bank number is: " + bankNumber), BorderLayout.CENTER);
 
-                JButton copyButton = new JButton("Copy Bank Number");
-                copyButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        StringSelection stringSelection = new StringSelection(bankNumber);
-                        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                        clipboard.setContents(stringSelection, null);
-                        // Optionally provide feedback that copy was successful
-                        // ((JButton)e.getSource()).setText("Copied!");
-                        // ((JButton)e.getSource()).setEnabled(false);
-                        // Optionally provide feedback that copy was successful
-                        // ((JButton)e.getSource()).setText("Copied!");
-                        // ((JButton)e.getSource()).setEnabled(false);
-                    }
-                });
-                messagePanel.add(copyButton, BorderLayout.SOUTH);
+                    JButton copyButton = new JButton("Copy Bank Number");
+                    copyButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            StringSelection stringSelection = new StringSelection(bankNumber);
+                            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                            clipboard.setContents(stringSelection, null); // Copy bank number to clipboard
+                        }
+                    });
+                    messagePanel.add(copyButton, BorderLayout.SOUTH);
 
-                JOptionPane.showMessageDialog(GUI.this, messagePanel, "Registration Successful", JOptionPane.INFORMATION_MESSAGE);
-                cardLayout.show(mainPanel, "login");
+                    JOptionPane.showMessageDialog(GUI.this, messagePanel, "Registration Successful", JOptionPane.INFORMATION_MESSAGE);
+                    cardLayout.show(mainPanel, "login"); // Switch to login panel after registration
                 } else {
-                     JOptionPane.showMessageDialog(GUI.this, "Registration failed. Please try again.", "Registration Error", JOptionPane.ERROR_MESSAGE);
-                     // Clear fields maybe?
-                     userNameField.setText("");
-                     pinNumberField.setText("");
+                    JOptionPane.showMessageDialog(GUI.this, "Registration failed. Please try again.", "Registration Error", JOptionPane.ERROR_MESSAGE);
+                    userNameField.setText("");
+                    pinNumberField.setText("");
                 }
             }
         });
@@ -247,7 +223,7 @@ public class GUI extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "initial");
+                cardLayout.show(mainPanel, "initial"); // Go back to initial panel
             }
         });
 
@@ -257,13 +233,11 @@ public class GUI extends JFrame {
     private JPanel createMainMenu(JPanel mainPanel, CardLayout cardLayout) {
         System.out.println("Creating main menu panel...");
         JPanel mainMenuPanel = new JPanel(new BorderLayout());
-        JPanel buttonPanel = new JPanel(new GridLayout(3, 2)); // Changed to GridLayout
+        JPanel buttonPanel = new JPanel(new GridLayout(3, 2));
         JButton depositButton = new JButton("Deposit");
         depositButton.setPreferredSize(new Dimension(150, 25));
         JButton withdrawButton = new JButton("Withdraw");
         withdrawButton.setPreferredSize(new Dimension(150, 25));
-        //JButton transactionHistoryButton = new JButton("Transaction History (Text)");
-        //transactionHistoryButton.setPreferredSize(new Dimension(150, 25));
         JButton transactionHistoryButtonGUI = new JButton("Transaction History");
         transactionHistoryButtonGUI.setPreferredSize(new Dimension(150, 25));
         JButton logoutButton = new JButton("Logout");
@@ -271,7 +245,6 @@ public class GUI extends JFrame {
 
         buttonPanel.add(depositButton);
         buttonPanel.add(withdrawButton);
-        //buttonPanel.add(transactionHistoryButton);
         buttonPanel.add(transactionHistoryButtonGUI);
         buttonPanel.add(logoutButton);
 
@@ -285,7 +258,6 @@ public class GUI extends JFrame {
                 if (loggedInUser != null) {
                     List<Transaction> transactionHistory = bank.getTransactionHistory(loggedInUser.getBankNumber());
 
-                    // Prepare data for the table
                     String[] columnNames = {"Timestamp", "Type", "Amount", "Description"};
                     Object[][] data = new Object[transactionHistory.size()][4];
                     for (int i = 0; i < transactionHistory.size(); i++) {
@@ -296,11 +268,9 @@ public class GUI extends JFrame {
                         data[i][3] = transaction.getDescription();
                     }
 
-                    // Create the table
                     JTable transactionTable = new JTable(data, columnNames);
                     JScrollPane scrollPane = new JScrollPane(transactionTable);
 
-                    // Display the table in a JOptionPane
                     JOptionPane.showMessageDialog(GUI.this, scrollPane, "Transaction History", JOptionPane.PLAIN_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(GUI.this, "Please log in to view transaction history.", "Authentication Required", JOptionPane.WARNING_MESSAGE);
@@ -311,31 +281,6 @@ public class GUI extends JFrame {
         mainMenuPanel.add(buttonPanel, BorderLayout.NORTH);
         mainMenuPanel.add(scrollPane, BorderLayout.CENTER);
 
-      /*  transactionHistoryButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                List<Transaction> transactionHistory = bank.getTransactionHistory(loggedInUser.getBankNumber());
-
-                // Prepare data for the table
-                String[] columnNames = {"Timestamp", "Type", "Amount", "Description"};
-                Object[][] data = new Object[transactionHistory.size()][4];
-                for (int i = 0; i < transactionHistory.size(); i++) {
-                    Transaction transaction = transactionHistory.get(i);
-                    data[i][0] = transaction.getTimestamp();
-                    data[i][1] = transaction.getType();
-                    data[i][2] = transaction.getAmount();
-                    data[i][3] = transaction.getDescription();
-                }
-
-                // Create the table
-                JTable transactionTable = new JTable(data, columnNames);
-                JScrollPane scrollPane = new JScrollPane(transactionTable);
-
-                // Display the table in a JOptionPane
-                JOptionPane.showMessageDialog(GUI.this, scrollPane, "Transaction History", JOptionPane.PLAIN_MESSAGE);
-            }
-        });*/
-
         depositButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -344,8 +289,8 @@ public class GUI extends JFrame {
                     try {
                         double amount = Double.parseDouble(amountString);
                         if (amount <= 0) {
-                             JOptionPane.showMessageDialog(GUI.this, "Deposit amount must be positive.", "Invalid Amount", JOptionPane.WARNING_MESSAGE);
-                             return;
+                            JOptionPane.showMessageDialog(GUI.this, "Deposit amount must be positive.", "Invalid Amount", JOptionPane.WARNING_MESSAGE);
+                            return;
                         }
                         boolean success = bank.deposit(loggedInUser.getBankNumber(), amount);
                         if (success) {
@@ -368,19 +313,16 @@ public class GUI extends JFrame {
                 if (amountString != null && !amountString.isEmpty()) {
                     try {
                         double amount = Double.parseDouble(amountString);
-                         if (amount <= 0) {
-                             JOptionPane.showMessageDialog(GUI.this, "Withdrawal amount must be positive.", "Invalid Amount", JOptionPane.WARNING_MESSAGE);
-                             return;
-                         }
+                        if (amount <= 0) {
+                            JOptionPane.showMessageDialog(GUI.this, "Withdrawal amount must be positive.", "Invalid Amount", JOptionPane.WARNING_MESSAGE);
+                            return;
+                        }
                         boolean success = bank.withdraw(loggedInUser.getBankNumber(), amount);
                         if (success) {
                             displayUserDetails();
                             JOptionPane.showMessageDialog(GUI.this, "Withdrawal successful.");
                         } else {
-                            // Bank class handles the "Insufficient balance" message,
-                            // but we might need a more specific error from the bank method later.
-                            // For now, a generic failure message if success is false.
-                             JOptionPane.showMessageDialog(GUI.this, "Withdrawal failed. Check balance or try again.", "Withdrawal Error", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(GUI.this, "Withdrawal failed. Check balance or try again.", "Withdrawal Error", JOptionPane.ERROR_MESSAGE);
                         }
                     } catch (NumberFormatException ex) {
                         JOptionPane.showMessageDialog(GUI.this, "Invalid amount format.", "Input Error", JOptionPane.ERROR_MESSAGE);
@@ -394,7 +336,7 @@ public class GUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 loggedInUser = null;
                 userDetailsLabel.setText("Not logged in");
-                cardLayout.show(mainPanel, "initial");
+                cardLayout.show(mainPanel, "initial"); // Go back to initial panel
             }
         });
 
@@ -424,12 +366,12 @@ public class GUI extends JFrame {
                 if (amountString != null && !amountString.isEmpty()) {
                     try {
                         double amount = Double.parseDouble(amountString);
-                         if (amount <= 0) {
-                             JOptionPane.showMessageDialog(GUI.this, "Deposit amount must be positive.", "Invalid Amount", JOptionPane.WARNING_MESSAGE);
-                             return;
-                         }
+                        if (amount <= 0) {
+                            JOptionPane.showMessageDialog(GUI.this, "Deposit amount must be positive.", "Invalid Amount", JOptionPane.WARNING_MESSAGE);
+                            return;
+                        }
                         boolean success = bank.deposit(loggedInUser.getBankNumber(), amount);
-                         if (success) {
+                        if (success) {
                             displayUserDetails();
                             JOptionPane.showMessageDialog(GUI.this, "Deposit successful.");
                         } else {
@@ -449,16 +391,16 @@ public class GUI extends JFrame {
                 if (amountString != null && !amountString.isEmpty()) {
                     try {
                         double amount = Double.parseDouble(amountString);
-                         if (amount <= 0) {
-                             JOptionPane.showMessageDialog(GUI.this, "Withdrawal amount must be positive.", "Invalid Amount", JOptionPane.WARNING_MESSAGE);
-                             return;
-                         }
+                        if (amount <= 0) {
+                            JOptionPane.showMessageDialog(GUI.this, "Withdrawal amount must be positive.", "Invalid Amount", JOptionPane.WARNING_MESSAGE);
+                            return;
+                        }
                         boolean success = bank.withdraw(loggedInUser.getBankNumber(), amount);
-                         if (success) {
+                        if (success) {
                             displayUserDetails();
                             JOptionPane.showMessageDialog(GUI.this, "Withdrawal successful.");
                         } else {
-                             JOptionPane.showMessageDialog(GUI.this, "Withdrawal failed. Check balance or try again.", "Withdrawal Error", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(GUI.this, "Withdrawal failed. Check balance or try again.", "Withdrawal Error", JOptionPane.ERROR_MESSAGE);
                         }
                     } catch (NumberFormatException ex) {
                         JOptionPane.showMessageDialog(GUI.this, "Invalid amount format.", "Input Error", JOptionPane.ERROR_MESSAGE);
@@ -472,7 +414,7 @@ public class GUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 JPanel manageUsersPanel = createManageUsersPanel(mainPanel, cardLayout);
                 mainPanel.add(manageUsersPanel, "manageUsers");
-                cardLayout.show(mainPanel, "manageUsers");
+                cardLayout.show(mainPanel, "manageUsers"); // Switch to manage users panel
             }
         });
 
@@ -481,7 +423,7 @@ public class GUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 loggedInUser = null;
                 userDetailsLabel.setText("Not logged in");
-                cardLayout.show(mainPanel, "initial");
+                cardLayout.show(mainPanel, "initial"); // Go back to initial panel
             }
         });
 
@@ -491,24 +433,21 @@ public class GUI extends JFrame {
     private JPanel createManageUsersPanel(JPanel mainPanel, CardLayout cardLayout) {
         JPanel manageUsersPanel = new JPanel(new BorderLayout());
 
-        // Add Bank Number column
         String[] columnNames = {"User Name", "Bank Number", "Account Type", "Is Admin"};
-        List<User> userList = bank.getUsers(); // Get user list once
+        List<User> userList = bank.getUsers();
         Object[][] data = new Object[userList.size()][4];
         for (int i = 0; i < userList.size(); i++) {
             User user = userList.get(i);
             data[i][0] = user.getUserName();
-            data[i][1] = user.getBankNumber(); // Add bank number
+            data[i][1] = user.getBankNumber();
             data[i][2] = user.getAccountType();
-            data[i][3] = user.isAdmin(); // Add admin status
+            data[i][3] = user.isAdmin();
         }
 
-        // Make table non-editable
         JTable usersTable = new JTable(data, columnNames) {
-             @Override
+            @Override
             public boolean isCellEditable(int row, int column) {
-               //all cells false
-               return false;
+                return false; // Make the table non-editable
             }
         };
         JScrollPane scrollPane = new JScrollPane(usersTable);
@@ -531,9 +470,8 @@ public class GUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = usersTable.getSelectedRow();
                 if (selectedRow != -1) {
-                    // Get bankNumber from the selected row (column index 1)
                     String bankNumber = (String) usersTable.getValueAt(selectedRow, 1);
-                    String currentUserName = (String) usersTable.getValueAt(selectedRow, 0); // For display
+                    String currentUserName = (String) usersTable.getValueAt(selectedRow, 0);
 
                     JPanel accountTypePanel = new JPanel(new GridLayout(0, 1));
                     JRadioButton savingRadioButton = new JRadioButton("saving");
@@ -543,7 +481,6 @@ public class GUI extends JFrame {
                     accountTypeGroup.add(checkingRadioButton);
                     accountTypePanel.add(savingRadioButton);
                     accountTypePanel.add(checkingRadioButton);
-                    // Pre-select current type (optional but helpful)
                     String currentType = (String) usersTable.getValueAt(selectedRow, 2);
                     if ("saving".equalsIgnoreCase(currentType)) savingRadioButton.setSelected(true);
                     else if ("checking".equalsIgnoreCase(currentType)) checkingRadioButton.setSelected(true);
@@ -558,12 +495,10 @@ public class GUI extends JFrame {
                         }
 
                         if (newAccountType != null) {
-                            // Use bankNumber to change account type
                             boolean success = bank.changeAccountType(bankNumber, newAccountType);
                             if (success) {
                                 JOptionPane.showMessageDialog(GUI.this, "Account type changed successfully for " + currentUserName + ".");
-                                // Go back to admin menu instead of trying to refresh in place
-                                cardLayout.show(mainPanel, "adminMenu");
+                                cardLayout.show(mainPanel, "adminMenu"); // Go back to admin menu
                             } else {
                                 JOptionPane.showMessageDialog(GUI.this, "Failed to change account type.", "Error", JOptionPane.ERROR_MESSAGE);
                             }
@@ -582,32 +517,28 @@ public class GUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = usersTable.getSelectedRow();
                 if (selectedRow != -1) {
-                    // Get bankNumber from the selected row (column index 1)
                     String bankNumber = (String) usersTable.getValueAt(selectedRow, 1);
-                    String currentUserName = (String) usersTable.getValueAt(selectedRow, 0); // For display
-                    // Safely check the boolean value from the table model
+                    String currentUserName = (String) usersTable.getValueAt(selectedRow, 0);
                     Object isAdminObj = usersTable.getValueAt(selectedRow, 3);
-                    boolean isAdmin = Boolean.TRUE.equals(isAdminObj); // Handles null and checks for true
+                    boolean isAdmin = Boolean.TRUE.equals(isAdminObj);
 
                     if (isAdmin) {
-                         JOptionPane.showMessageDialog(GUI.this, currentUserName + " is already an admin.", "Info", JOptionPane.INFORMATION_MESSAGE);
-                         return;
+                        JOptionPane.showMessageDialog(GUI.this, currentUserName + " is already an admin.", "Info", JOptionPane.INFORMATION_MESSAGE);
+                        return;
                     }
 
                     int confirm = JOptionPane.showConfirmDialog(GUI.this,
-                        "Grant admin privileges to " + currentUserName + "?",
-                        "Confirm Admin Grant",
-                        JOptionPane.YES_NO_OPTION);
+                            "Grant admin privileges to " + currentUserName + "?",
+                            "Confirm Admin Grant",
+                            JOptionPane.YES_NO_OPTION);
 
                     if (confirm == JOptionPane.YES_OPTION) {
-                        // Use bankNumber to grant admin
                         boolean success = bank.grantAdmin(bankNumber);
                         if (success) {
                             JOptionPane.showMessageDialog(GUI.this, "Admin privilege granted successfully to " + currentUserName + ".");
-                             // Go back to admin menu instead of trying to refresh in place
-                            cardLayout.show(mainPanel, "adminMenu");
+                            cardLayout.show(mainPanel, "adminMenu"); // Go back to admin menu
                         } else {
-                             JOptionPane.showMessageDialog(GUI.this, "Failed to grant admin privilege.", "Error", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(GUI.this, "Failed to grant admin privilege.", "Error", JOptionPane.ERROR_MESSAGE);
                         }
                     }
                 } else {
@@ -616,11 +547,10 @@ public class GUI extends JFrame {
             }
         });
 
-
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "adminMenu");
+                cardLayout.show(mainPanel, "adminMenu"); // Go back to admin menu
             }
         });
 
